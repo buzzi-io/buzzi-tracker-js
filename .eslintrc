@@ -1,0 +1,6 @@
+{
+  "extends": "buzzi",
+  "parserOptions": {
+    "sourceType": "module"
+  }
+}

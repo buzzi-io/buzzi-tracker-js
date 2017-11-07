@@ -1,8 +1,14 @@
 # buzzi-tracker-js
-Browser Website Tracking
+Site (Ecommerce) Tracking
 
 ### Copy Script into Browser
 
-```javascript
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];var f=d.getElementsByTagName(s)[0],j=d.createElement(s)t=1*new Date;j.async=true;j.src='https://cdn.buzzi.io/tracking.min.js?id='+i+'ts='+t;f.parentNode.insertBefore(j, f);})(window,document,'script','buzzi','YOUR_BUZZI_TRACKER_ID_HERE');</script>
+```html
+<!-- Buzzi Tracking -->
+<script>
+window.buzzi=window.buzzi||function(){(buzzi.q=buzzi.q||[]).push(arguments)};buzzi.l=+new Date;
+buzzi('init', /* YOUR BUZZI SITE ID HERE */);
+</script>
+<script async src='https://cdn.buzzi.io/tracking.min.js'></script>
+<!-- End Buzzi Tracking -->
 ```
