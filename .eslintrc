@@ -2,5 +2,9 @@
   "extends": "buzzi",
   "parserOptions": {
     "sourceType": "module"
+  },
+  "globals": {
+    "window": true,
+    "document": true
   }
 }
