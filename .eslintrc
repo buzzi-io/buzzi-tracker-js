@@ -1,7 +1,10 @@
 {
   "extends": "buzzi",
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
   "globals": {
     "window": true,

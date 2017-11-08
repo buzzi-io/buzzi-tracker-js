@@ -11,6 +11,10 @@ export const isString = s => (typeof s === 'string');
 export const isFunction = f => (typeof f === 'function');
 export const isArray = a => (Array.isArray(a));
 export const isObject = o => (Object.prototype.toString.call(o) === '[object Object]');
+export const isNumber = n => (!Number.isNan(parseFloat(n)) && Number.isFinite(n));
+export const isInteger = n => (Number.isInteger(n));
+export const isPositive = n => (n > 0);
+export const isNegative = n => (n < 0);
 
 export const isPlainObject = o => (
   (o !== null) && (typeof o === 'object') &&
