@@ -9,7 +9,7 @@ import {
 import * as browser from 'common/browser';
 import Storage from './storage';
 import Agent from './agent';
-import actions from './actions/index';
+import * as actions from './actions/index';
 
 export default class Tracker {
 
