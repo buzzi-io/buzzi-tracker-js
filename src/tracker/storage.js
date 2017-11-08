@@ -2,7 +2,7 @@
 import storage from 'js-cookie';
 
 const KEY = Object.freeze({
-  CONTACT: 'contactid',
+  CLIENT: 'clientid',
   SESSION: 'sessionid',
   EMAIL: 'email',
   CAMPAIGN: 'campaignid',
@@ -10,48 +10,65 @@ const KEY = Object.freeze({
 
 export default class TrackerStorage {
 
-  getContactId() {
-    return storage.get(KEY.CONTACT);
-  }
+  // Getter Methods
 
-  setContactId(id) {
-    storage.set(KEY.CONTACT, id, { expires: 365 * 10 }); // 10 years
+  getClientId() {
+    return storage.get(KEY.CLIENT);
   }
 
   getSessionId() {
     return storage.get(KEY.SESSION);
   }
 
-  setSessionId(id) {
-    storage.set(KEY.SESSION, id, { expires: 1 }); // 1 day
-  }
-
   getEmail() {
     return storage.get(KEY.EMAIL);
-  }
-
-  setEmail(email) {
-    storage.set(KEY.EMAIL, email);
   }
 
   getCampaignId() {
     return storage.get(KEY.CAMPAIGN);
   }
 
+  // Setter Methods
+
+  setClientId(id) {
+    storage.set(KEY.CLIENT, id, { expires: 365 * 10 }); // 10 years
+  }
+
+  setSessionId(id) {
+    storage.set(KEY.SESSION, id, { expires: 1 }); // 1 day
+  }
+
+  setEmail(email) {
+    storage.set(KEY.EMAIL, email);
+  }
+
   setCampaignId(id) {
     storage.set(KEY.CAMPAIGN, id);
   }
 
-  getCurrentPageUrl() {
-    return window.location.href;
+  // Clear Methods
+
+  clearAll() {
+    this.clearClientId();
+    this.clearEmail();
+    this.clearSessionId();
+    this.clearCampaignId();
   }
 
-  getDomain() {
-    return window.location.href.replace(/(http(s)?:\/\/)|(\/.*){1}/g, '');
+  clearClientId() {
+    storage.remove(KEY.CLIENT);
   }
 
-  getReferrer() {
-    return document.referrer;
+  clearEmail() {
+    storage.remove(KEY.EMAIL);
+  }
+
+  clearSessionId() {
+    storage.remove(KEY.SESSION);
+  }
+
+  clearCampaignId() {
+    storage.remove(KEY.CAMPAIGN);
   }
 
 }
