@@ -1,4 +1,3 @@
-
 import uuid from 'uuid/v4';
 import {
   isUuid,
@@ -10,9 +9,10 @@ import {
 import * as browser from 'common/browser';
 import Storage from './storage';
 import Agent from './agent';
-
+import actions from './actions/index';
 
 export default class Tracker {
+
 
   constructor(tracker_id, name) {
 
@@ -24,6 +24,7 @@ export default class Tracker {
 
     this.storage = new Storage();
     this.agent = new Agent();
+    this.actions = actions;
 
     // Initialize Cookies
 
@@ -37,6 +38,7 @@ export default class Tracker {
 
   }
 
+
   init() {
     browser.getFingerprint(fingerprint => {
       this.agent.init(this.createPayload({
@@ -45,7 +47,8 @@ export default class Tracker {
     });
   }
 
-  identify(email, full_name) {
+
+  identify(email) {
 
     if (!isEmail(email)) {
       throw new Error('buzzi.identify: invalid email');
@@ -60,6 +63,29 @@ export default class Tracker {
     this.agent.identify(this.createPayload());
   }
 
+
+  track(action, ...args) {
+
+    if (!isString(action)) {
+      throw new Error('buzzi.track: missing action type');
+    }
+
+    if (!this.actions.hasOwnProperty(action) || !isFunction(this.actions[action])) {
+      throw new Error('buzzi.track: invalid action type');
+    }
+
+    const result = this.actions[action](...args)(this.createPayload.bind(this));
+
+    if (!isPlainObject(result)) {
+      throw new Error('buzzi.track: invalid payload');
+    }
+
+    result.action = action;
+
+    this.agent.track(result);
+  }
+
+
   createPayload(action, arg) {
 
     const payload = {
@@ -68,6 +94,9 @@ export default class Tracker {
       session_id: this.storage.getSessionId(),
       email: this.storage.getEmail(),
       campaign_id: this.storage.getCampaignId(),
+      url: browser.getCurrentPageUrl(),
+      domain: browser.getDomain(),
+      referrer: browser.getReferrer(),
     };
 
     if (isString(action)) {
@@ -89,5 +118,6 @@ export default class Tracker {
 
     return payload;
   }
+
 
 }

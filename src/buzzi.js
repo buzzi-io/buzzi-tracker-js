@@ -1,5 +1,7 @@
 
+import { isFunction } from './common/util';
 import Tracker from './tracker/tracker';
+import actions from './actions/index';
 
 let tracker;
 
@@ -17,9 +19,12 @@ export default function buzzi(...args) {
       throw new Error('buzzi: "init" must be called first');
     }
 
-    switch (command) {
-      default: return;
+    if (command === 'identify') {
+      tracker.identify(...args.slice(1));
+      return;
     }
+
+    tracker.track(...args);
 
   } catch (err) {
     console.error(err); // eslint-disable-line no-console
