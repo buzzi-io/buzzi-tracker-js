@@ -1,8 +1,10 @@
 import { getCurrentPageUrl } from 'common/browser';
 import {
   isObject,
-  isNumber,
   isString,
+  isInteger,
+  isNumber,
+  isValue,
   isUrl,
 } from 'common/util';
 
@@ -13,7 +15,7 @@ export function formatProduct(product) {
     throw new Error('buzzi.product: missing product');
   }
 
-  if (!(isNumber(product.code) || isString(product.code))) {
+  if (!isValue(product.code)) {
     throw new Error('buzzi.product: invalid product code');
   }
 
@@ -30,19 +32,21 @@ export function formatProduct(product) {
     product.url = getCurrentPageUrl();
   }
 
-  if (!(isString(product.price) || isNumber(product.price))) {
+  if (!isValue(product.price)) {
     console.warn('buzzi.product: no product price, defaulting to 1');
     product.price = 0;
+  } else if (isNumber(product.price)) {
+    product.price = product.price.toFixed(2);
   }
 
-  if (!isNumber(product.quantity)) {
+  if (!isInteger(product.quantity)) {
     console.warn('buzzi.product: no product quantity, defaulting to 1');
     product.quantity = 1;
   }
 
-  if (!(isString(product.total) || isNumber(product.total))) {
+  if (!isValue(product.total)) {
     console.warn('buzzi.product: no product total, defaulting to product price times quantity');
-    product.total = (+product.price) * (+product.quantity);
+    product.total = ((+product.price) * (+product.quantity)).toFixed(2);
   }
 
   return product;

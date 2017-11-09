@@ -1,7 +1,5 @@
 
-import { isFunction } from './common/util';
 import Tracker from './tracker/tracker';
-import actions from './actions/index';
 
 let tracker;
 

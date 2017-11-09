@@ -15,6 +15,7 @@ export const isNumber = n => (!Number.isNan(parseFloat(n)) && Number.isFinite(n)
 export const isInteger = n => (Number.isInteger(n));
 export const isPositive = n => (n > 0);
 export const isNegative = n => (n < 0);
+export const isValue = v => (isNumber(v) || isString(v));
 
 export const isPlainObject = o => (
   (o !== null) && (typeof o === 'object') &&
