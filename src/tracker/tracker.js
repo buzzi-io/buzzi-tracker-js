@@ -15,13 +15,13 @@ const actions = require('./actions');
 export default class Tracker {
 
 
-  constructor(tracker_id, name) {
+  constructor(tracker_id, site_id) {
 
     if (!tracker_id) throw new Error('buzzi.tracker: missing tracker_id');
     if (!isUuid(tracker_id)) throw new Error('buzzi.tracker: invalid tracker_id');
 
     this.tracker_id = tracker_id;
-    this.name = name;
+    this.site_id = site_id; // optional.
 
     this.storage = new Storage();
     this.agent = new Agent();
@@ -98,6 +98,7 @@ export default class Tracker {
 
     const payload = {
       tracking_id: this.tracking_id,
+      site_id: this.site_id,
       client_id: this.storage.getClientId(),
       session_id: this.storage.getSessionId(),
       email: this.storage.getEmail(),
