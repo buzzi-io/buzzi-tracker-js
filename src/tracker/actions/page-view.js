@@ -1,8 +1,10 @@
 
+import { isUrl } from 'common/util';
 import { getCurrentPageUrl } from 'common/browser';
 
-export default () => createPayload => (
+
+export default url => createPayload => (
   createPayload(payload => {
-    payload.url = getCurrentPageUrl();
+    payload.url = isUrl(url) ? url : getCurrentPageUrl();
   })
 );

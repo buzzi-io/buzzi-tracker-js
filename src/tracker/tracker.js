@@ -2,14 +2,15 @@ import uuid from 'uuid/v4';
 import {
   isUuid,
   isPlainObject,
+  isObject,
   isFunction,
   isEmail,
   isString,
 } from 'common/util';
 import * as browser from 'common/browser';
+import * as actions from './actions/index';
 import Storage from './storage';
 import Agent from './agent';
-import * as actions from './actions/index';
 
 export default class Tracker {
 
@@ -70,18 +71,23 @@ export default class Tracker {
       throw new Error('buzzi.track: missing action type');
     }
 
-    if (!this.actions.hasOwnProperty(action) || !isFunction(this.actions[action])) {
-      throw new Error('buzzi.track: invalid action type');
+    let result;
+    if (this.actions.hasOwnProperty(action)) {
+      // Supported Events
+      result = this.actions[action](...args)(this.createPayload.bind(this, action));
+    } else if (isObject(args[0]) && args.length === 1) {
+      // Custom Events
+      result = { ...args[0] };
+      result.action = action;
+    } else {
+      throw new Error('buzzi.track: invalid track call');
     }
-
-    const result = this.actions[action](...args)(this.createPayload.bind(this));
 
     if (!isPlainObject(result)) {
       throw new Error('buzzi.track: invalid payload');
     }
 
-    result.action = action;
-
+    // @TODO: must "action" type out of the json body and into the rest url.
     this.agent.track(result);
   }
 
