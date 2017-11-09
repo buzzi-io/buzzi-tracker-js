@@ -8,9 +8,9 @@ import {
   isString,
 } from 'common/util';
 import * as browser from 'common/browser';
-import * as actions from './actions/index';
 import Storage from './storage';
 import Agent from './agent';
+const actions = require('./actions');
 
 export default class Tracker {
 
@@ -71,28 +71,30 @@ export default class Tracker {
       throw new Error('buzzi.track: missing action type');
     }
 
-    let result;
+    let result, payload = this.createPayload();
     if (this.actions.hasOwnProperty(action)) {
       // Supported Events
-      result = this.actions[action](...args)(this.createPayload.bind(this, action));
-    } else if (isObject(args[0]) && args.length === 1) {
-      // Custom Events
-      result = { ...args[0] };
-      result.action = action;
+      result = this.actions[action](...args)(payload);
     } else {
-      throw new Error('buzzi.track: invalid track call');
+      // Custom Events
+      if (isFunction(args[1])) {
+        result = args[1](payload);
+      } else if (isPlainObject(args[1])){
+        result = { ...payload, ...args[1] };
+      } else {
+        throw new Error('buzzi.track: invalid custom event data');
+      }
     }
 
-    if (!isPlainObject(result)) {
-      throw new Error('buzzi.track: invalid payload');
+    if (isPlainObject(result)) {
+      payload = result;
     }
 
-    // @TODO: must "action" type out of the json body and into the rest url.
-    this.agent.track(result);
+    this.agent.track(action, payload);
   }
 
 
-  createPayload(action, arg) {
+  createPayload(arg) {
 
     const payload = {
       tracking_id: this.tracking_id,
@@ -104,12 +106,6 @@ export default class Tracker {
       domain: browser.getDomain(),
       referrer: browser.getReferrer(),
     };
-
-    if (isString(action)) {
-      payload.action = action;
-    } else {
-      arg = action;
-    }
 
     if (isPlainObject(arg)) {
       return Object.assign(payload, arg);

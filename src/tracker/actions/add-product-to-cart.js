@@ -8,11 +8,9 @@ import {
 } from 'common/util';
 
 
-export default product => createPayload => (
-  createPayload(payload => {
-    payload.product = processProduct(product);
-  })
-);
+export default product => payload => {
+  payload.product = processProduct(product);
+};
 
 
 function processProduct(product) {

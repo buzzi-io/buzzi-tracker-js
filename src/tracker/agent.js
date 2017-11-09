@@ -14,8 +14,8 @@ export default class TrackerAgent {
     this.send('/identify', data);
   }
 
-  track(data) {
-    this.send('/track', data);
+  track(action, data) {
+    this.send(`/track/${action}`, data);
   }
 
   send(url, data) {

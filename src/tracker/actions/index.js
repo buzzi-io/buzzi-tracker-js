@@ -1,8 +1,6 @@
+/* eslint global-require:0 */
 
-import addProductToCart from './add-product-to-cart';
-import pageView from './page-view';
-
-export {
-  addProductToCart,
-  pageView,
+exports = module.exports = {
+  'add-product-to-cart': require('add-product-to-cart'),
+  'page-view': require('page-view'),
 };
