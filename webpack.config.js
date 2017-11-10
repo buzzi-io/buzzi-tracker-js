@@ -8,7 +8,7 @@ var library = 'buzzi';
 var filename = 'tracker.min.js';
 
 var config = {
-  entry: './src/index.js',
+  entry: './src/main.js',
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -33,12 +33,12 @@ var config = {
   },
   plugins: [
     new DefinePlugin({
-      'process.env.API_URL': JSON.stringify('https://tracker.buzzi.io')
+      'process.env.API_URL': JSON.stringify('http://127.0.0.1:3000/api')
     }),
-    new UglifyJsPlugin({
-      sourceMap: true,
-      parallel: true
-    })
+    // new UglifyJsPlugin({
+    //   sourceMap: true,
+    //   parallel: true
+    // })
   ],
 };
 

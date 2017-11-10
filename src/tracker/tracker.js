@@ -8,9 +8,9 @@ import {
   isString,
 } from 'common/util';
 import * as browser from 'common/browser';
+import actions from './actions';
 import Storage from './storage';
 import Agent from './agent';
-const actions = require('./actions');
 
 export default class Tracker {
 

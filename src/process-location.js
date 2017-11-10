@@ -1,15 +1,15 @@
 
 import storage from './tracker/storage';
 import { isUuid, isEmail, isString } from './common/util';
-const { URL } = require('url'); // https://nodejs.org/docs/latest-v8.x/api/url.html
+const url = require('url');
 
-exports = module.exports = function processUrl(url) {
+exports = module.exports = function processUrl(href) {
 
-  const params = (new URL(url)).searchParams;
+  const { query } = url.parse(href, true);
 
-  const clientid = params.get('client_id') || params.get('cid');
-  const campaignid = params.get('campaign_id') || params.get('cmid');
-  const email = params.get('email');
+  const clientid = query.client_id || query.cid;
+  const campaignid = query.campaign_id || query.cmid;
+  const email = query.email;
 
   if (isUuid(clientid)) storage.setClientId(clientid);
   if (isString(campaignid)) storage.setCampaignId(campaignid);

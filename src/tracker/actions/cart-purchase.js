@@ -12,12 +12,13 @@ export default cart => payload => {
     throw new Error('buzzi.cartPurchase: missing cart');
   }
 
-  if (!isValue(cart.id)) {
-    throw new Error('buzzi.cartPurchase: missing cart order id');
-  }
-
   if (payload.email) {
     throw new Error('buzzi.cartPurchase: customer not identified yet');
+  }
+
+  if (!isValue(cart.id)) {
+    console.warn('buzzi.cartPurchase: missing cart order id');
+    // throw new Error('buzzi.cartPurchase: missing cart order id');
   }
 
   if (isArray(cart.products)) {

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Buzzi Tracker Demo</title>
+  <script>window.buzzi=window.buzzi||function(){(buzzi.q=buzzi.q||[]).push(arguments)};buzzi.l=+new Date;</script>
+  <script async src="./tracker.min.js"></script>
+</head>
+<body>
+
+    <h2>Document Cookie</h2>
+    <div class="demo-cookie" id="demo-cookie">
+      <span id="cookie"></span>
+    </div>
+
+    <h2>API Demo</h2>
+    <div class="demo-item">
+      <div class="demo-item__description">
+        <h3>#Identfiy</h3>
+      </div>
+      <input type="text" id="txt-identify-email" placeholder="enter email"/>
+      <button id="btn-identify">Identify</button>
+    </div>
+
+    <div class="demo-item">
+      <div class="demo-item__description">
+        <h3>#Track Login</h3>
+      </div>
+      <button id="btn-track-login">Track Login</button>
+    </div>
+
+    <div class="demo-item">
+      <div class="demo-item__description">
+        <h3>#Track Page</h3>
+      </div>
+      <button id="btn-track-page">Track Page</button>
+    </div>
+
+    <div class="demo-item">
+      <div class="demo-item__description">
+        <h3>#Track Purchase</h3>
+      </div>
+      <button id="btn-track-purchase">Track Purchase</button>
+    </div>
+
+    <div class="demo-item">
+      <div class="demo-item__description">
+        <h3>#Track Custom Action</h3>
+      </div>
+      <input type="text" id="txt-track-action" placeholder="enter action" />
+      <textarea id="txt-track-action-props" placeholder="enter JSON props">[{ "SKU": 1234567 }, { "Price": 15.67}]</textarea>
+      <button id="btn-track-action">Track Action</button>
+    </div>
+
+    <script type="text/javascript">
+
+      buzzi('init', 'cb66e5cb-c4c4-11e7-8f52-080027495a77');
+      buzzi('page-view');
+
+      /**
+       * Identfiy
+       *
+       * @param {string} email - Mandatory parameter for identify call
+       * @param {string=} name - Optional parameter
+       */
+      (function () {
+
+        var btn = document.getElementById('btn-identify');
+        var inputEmail = document.getElementById('txt-identify-email');
+        btn.addEventListener('click', function () {
+          var email = inputEmail.value;
+
+          buzzi('identify', email);
+        })
+      }());
+
+      /**
+       * Track Login
+       */
+      (function () {
+        var btn = document.getElementById('btn-track-login');
+        btn.addEventListener('click', function () {
+          buzzi('login');
+        })
+      }());
+
+      /**
+       * Track Page View
+       */
+      (function () {
+        var btn = document.getElementById('btn-track-page');
+        btn.addEventListener('click', function () {
+          buzzi('page-view');
+        })
+      }());
+
+      /**
+       * Track Purchase
+       */
+      (function () {
+        var btn = document.getElementById('btn-track-purchase');
+        btn.addEventListener('click', function () {
+          buzzi('cart-purchase');
+        })
+      }());
+
+      /**
+       * Track Custom Action
+       */
+      (function () {
+        var btn = document.getElementById('btn-track-action');
+        var inputAction = document.getElementById('txt-track-action');
+        var inputActionProps = document.getElementById('txt-track-action-props');
+
+        btn.addEventListener('click', function () {
+          var action = inputAction.value;
+          var props = null;
+          var propsError = false;
+
+          if(!action) {
+            inputAction.classList.add('error');
+            return;
+          } else {
+            inputAction.classList.remove('error');
+          }
+
+          try{
+            props = JSON.parse(inputActionProps.value);
+
+            if(Object.keys(props).length === 0) {
+              propsError = true;
+            }
+          } catch(e) {
+            propsError = true;
+          }
+
+          if(propsError) {
+            inputActionProps.classList.add('error');
+            return;
+          } else {
+            inputActionProps.classList.remove('error');
+          }
+
+          buzzi(action, props);
+        })
+      }());
+
+      /**
+       * Update HTML element with cookie content on interval
+       */
+      setInterval(updateCookie, 500);
+
+      function updateCookie() {
+        var el = document.getElementById("cookie");
+        el.textContent = document.cookie || 'No cookie set';
+      }
+    </script>
+</body>
+</html>

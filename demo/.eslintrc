@@ -1,0 +1,6 @@
+{
+  "extends": "buzzi",
+  "rules": {
+    "no-console": 0
+  }
+}
