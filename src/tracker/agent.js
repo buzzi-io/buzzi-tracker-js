@@ -1,6 +1,6 @@
 import { apiUrl as BASEURL } from 'common/config';
 
-export default class TrackerAgent {
+export class Agent {
 
   constructor(baseurl = BASEURL) {
     this.baseurl = baseurl;
@@ -23,6 +23,10 @@ export default class TrackerAgent {
   }
 
 }
+
+export default new Agent();
+
+// ---
 
 function send(url, data) {
 

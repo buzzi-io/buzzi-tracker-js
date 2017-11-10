@@ -2,13 +2,13 @@
 import storage from 'js-cookie';
 
 const KEY = Object.freeze({
-  CLIENT: 'clientid',
-  SESSION: 'sessionid',
+  CLIENT: 'client',
+  SESSION: 'session',
   EMAIL: 'email',
-  CAMPAIGN: 'campaignid',
+  CAMPAIGN: 'campaign',
 });
 
-export default class TrackerStorage {
+export class Storage {
 
   // Getter Methods
 
@@ -48,6 +48,23 @@ export default class TrackerStorage {
 
   // Clear Methods
 
+  clear(...args) {
+
+    if (args.length === 0) {
+      return this.clearAll();
+    }
+
+    args.forEach(arg => {
+      switch (arg) {
+        case 'session': return this.clearSessionId();
+        case 'email': return this.clearEmail();
+        case 'client': return this.clearClientId();
+        case 'campaign': return this.clearCampaignId();
+        default: return;
+      }
+    });
+  }
+
   clearAll() {
     this.clearClientId();
     this.clearEmail();
@@ -72,3 +89,5 @@ export default class TrackerStorage {
   }
 
 }
+
+export default new Storage();

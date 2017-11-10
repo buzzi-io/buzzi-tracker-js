@@ -1,5 +1,6 @@
 
 const Fingerprint = require('fingerprintjs2');
+const url = require('url');
 
 const set = (o, k, v) => {
   o[k] = v;
@@ -40,4 +41,8 @@ export function getDomain() {
 
 export function getReferrer() {
   return document.referrer;
+}
+
+export function getCurrentQueryParams() {
+  return url.parse(window.location.href, true).query;
 }

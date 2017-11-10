@@ -4,16 +4,18 @@ import {
   isObject,
   isValue,
   isNumber,
+  isEmail,
 } from 'common/util';
 
 export default cart => payload => {
 
-  if (!isObject(cart)) {
-    throw new Error('buzzi.cartPurchase: missing cart');
+  if (!isEmail(payload.email)) {
+    throw new Error('buzzi.cartPurchase: customer not identified yet');
   }
 
-  if (payload.email) {
-    throw new Error('buzzi.cartPurchase: customer not identified yet');
+  if (!isObject(cart)) {
+    console.warn('buzzi.cartPurchase: now cart object - tracking without cart information');
+    return;
   }
 
   if (!isValue(cart.id)) {

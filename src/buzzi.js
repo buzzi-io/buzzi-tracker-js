@@ -1,5 +1,6 @@
 
 import Tracker from './tracker/tracker';
+import storage from './tracker/storage';
 
 let tracker;
 
@@ -8,13 +9,26 @@ export default function buzzi(...args) {
     const command = args[0];
 
     if (command === 'init') {
-      tracker = new Tracker(...args.slice(1));
+      if (!tracker) {
+        tracker = new Tracker(...args.slice(1));
+      }
       tracker.init();
       return;
     }
 
     if (!tracker) {
       throw new Error('buzzi: "init" must be called first');
+    }
+
+    if (command === 'clear') {
+      storage.clear(...args.slice(1));
+      return;
+    }
+
+    if (command === 'reinit') {
+      storage.clear(...args.slice(1));
+      tracker.init();
+      return;
     }
 
     if (command === 'identify') {

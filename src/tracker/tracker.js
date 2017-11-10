@@ -2,15 +2,14 @@ import uuid from 'uuid/v4';
 import {
   isUuid,
   isPlainObject,
-  isObject,
   isFunction,
   isEmail,
   isString,
 } from 'common/util';
 import * as browser from 'common/browser';
 import actions from './actions';
-import Storage from './storage';
-import Agent from './agent';
+import storage from './storage';
+import agent from './agent';
 
 export default class Tracker {
 
@@ -23,26 +22,35 @@ export default class Tracker {
     this.tracker_id = tracker_id;
     this.site_id = site_id; // optional.
 
-    this.storage = new Storage();
-    this.agent = new Agent();
-    this.actions = actions;
-
-    // Initialize Cookies
-
-    if (!isUuid(this.storage.getClientId())) {
-      this.storage.setClientId(uuid());
-    }
-
-    if (!isUuid(this.storage.getSessionId())) {
-      this.storage.setSessionId(uuid());
-    }
-
   }
 
 
   init() {
+
+    // Initialize Cookies
+
+    const query = browser.getCurrentQueryParams();
+
+    const clientid = query.client_id || query.cid;
+    const campaignid = query.campaign_id || query.cmid;
+    const email = query.email;
+
+    if (isUuid(clientid)) storage.setClientId(clientid);
+    if (isString(campaignid)) storage.setCampaignId(campaignid);
+    if (isEmail(email)) storage.setEmail(email);
+
+    if (!isUuid(storage.getClientId())) {
+      storage.setClientId(uuid());
+    }
+
+    if (!isUuid(storage.getSessionId())) {
+      storage.setSessionId(uuid());
+    }
+
+    // Send Browser Information
+
     browser.getFingerprint(fingerprint => {
-      this.agent.init(this.createPayload({
+      agent.init(this.createPayload({
         browser: fingerprint,
       }));
     });
@@ -55,13 +63,13 @@ export default class Tracker {
       throw new Error('buzzi.identify: invalid email');
     }
 
-    if (email === this.storage.getEmail()) {
+    if (email === storage.getEmail()) {
       return;
     }
 
-    this.storage.setEmail(email);
+    storage.setEmail(email);
 
-    this.agent.identify(this.createPayload());
+    agent.identify(this.createPayload());
   }
 
 
@@ -72,9 +80,9 @@ export default class Tracker {
     }
 
     let result, payload = this.createPayload();
-    if (this.actions.hasOwnProperty(action)) {
+    if (actions.hasOwnProperty(action)) {
       // Supported Events
-      result = this.actions[action](...args)(payload);
+      result = actions[action](...args)(payload);
     } else {
       // Custom Events
       if (isFunction(args[1])) {
@@ -82,7 +90,7 @@ export default class Tracker {
       } else if (isPlainObject(args[1])){
         result = { ...payload, ...args[1] };
       } else {
-        throw new Error('buzzi.track: invalid custom event data');
+        console.warn('buzzi.track: custom event data was not a plain object - tracking event without it');
       }
     }
 
@@ -90,7 +98,7 @@ export default class Tracker {
       payload = result;
     }
 
-    this.agent.track(action, payload);
+    agent.track(action, payload);
   }
 
 
@@ -99,10 +107,10 @@ export default class Tracker {
     const payload = {
       tracking_id: this.tracking_id,
       site_id: this.site_id,
-      client_id: this.storage.getClientId(),
-      session_id: this.storage.getSessionId(),
-      email: this.storage.getEmail(),
-      campaign_id: this.storage.getCampaignId(),
+      client_id: storage.getClientId(),
+      session_id: storage.getSessionId(),
+      email: storage.getEmail(),
+      campaign_id: storage.getCampaignId(),
       url: browser.getCurrentPageUrl(),
       domain: browser.getDomain(),
       referrer: browser.getReferrer(),
@@ -121,6 +129,5 @@ export default class Tracker {
 
     return payload;
   }
-
 
 }
