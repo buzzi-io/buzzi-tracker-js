@@ -6,6 +6,7 @@
   "module": "src/index.js",
   "scripts": {
     "build": "webpack",
+    "build-demo": "API_URL='http://127.0.0.1:3000/api' webpack; cp dist/* demo/static",
     "test": "mocha"
   },
   "repository": {

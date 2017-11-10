@@ -33,7 +33,7 @@ var config = {
   },
   plugins: [
     new DefinePlugin({
-      'process.env.API_URL': JSON.stringify('http://127.0.0.1:3000/api')
+      'process.env.API_URL': JSON.stringify(process.env.API_URL || 'https://tracker.buzzi.io')
     }),
     // new UglifyJsPlugin({
     //   sourceMap: true,
