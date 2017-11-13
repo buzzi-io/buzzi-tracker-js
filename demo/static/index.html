@@ -6,6 +6,17 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   <script>window.buzzi=window.buzzi||function(){(buzzi.q=buzzi.q||[]).push(arguments)};buzzi.l=+new Date;</script>
   <script async src="./tracker.min.js"></script>
+  <style type="text/css">
+    body {
+        padding: 20px;
+    }
+    h1, h2, h3, h4 {
+        padding: 30px 0 10px;
+    }
+    .demo-item {
+        padding: 0 0 0 20px;
+    }
+  </style>
 </head>
 <body>
 
@@ -48,8 +59,8 @@
       <div class="demo-item__description">
         <h3>Track Custom Action</h3>
       </div>
-      <input type="text" id="txt-track-action" placeholder="enter action" />
-      <textarea id="txt-track-action-props" placeholder="enter JSON props">[{ "SKU": 1234567 }, { "Price": 15.67}]</textarea>
+      <input type="text" id="txt-track-action" placeholder="enter action" /><br />
+      <textarea style="margin-top: 10px" id="txt-track-action-props" placeholder="enter JSON props">{ "total": "15.84" }</textarea><br />
       <button id="btn-track-action">Track Action</button>
     </div>
 

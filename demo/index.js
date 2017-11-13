@@ -3,11 +3,12 @@
 const Koa = require('koa');
 const serve = require('koa-static');
 const mount = require('koa-mount');
-const send = require('koa-send');
-const path = require('path');
+const cors = require('koa2-cors');
 
 
 const app = new Koa();
+
+app.use(cors());
 
 app.use(mount('/api', async ctx => {
   ctx.body = null;

@@ -7,6 +7,7 @@
   "scripts": {
     "build": "webpack",
     "build-demo": "API_URL='http://127.0.0.1:3000/api' webpack; cp dist/* demo/static",
+    "build-demo-qa": "API_URL='http://qa.tracker.buzzi.io/v1' webpack; cp dist/* demo/static",
     "test": "mocha"
   },
   "repository": {
