@@ -12,3 +12,18 @@ buzzi('init', /* YOUR BUZZI SITE ID HERE */);
 <script async src='https://cdn.buzzi.io/tracking.min.js'></script>
 <!-- End Buzzi Tracking -->
 ```
+
+### Run demo
+
+```bash
+# Build Tracker JS Bundle
+npm install
+npm run build-demo
+
+# Run Tracker Demo
+cd ./demo
+npm install
+npm start
+```
+
+Open browser with http://127.0.0.1:3000
