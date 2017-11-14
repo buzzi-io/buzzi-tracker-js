@@ -14,12 +14,12 @@ import agent from './agent';
 export default class Tracker {
 
 
-  constructor(tracker_id, site_id) {
+  constructor(tracking_id, site_id) {
 
-    if (!tracker_id) throw new Error('buzzi.tracker: missing tracker_id');
-    if (!isUuid(tracker_id)) throw new Error('buzzi.tracker: invalid tracker_id');
+    if (!tracking_id) throw new Error('buzzi.tracker: missing tracking_id');
+    if (!isUuid(tracking_id)) throw new Error('buzzi.tracker: invalid tracking_id');
 
-    this.tracker_id = tracker_id;
+    this.tracking_id = tracking_id;
     this.site_id = site_id; // optional.
 
   }
